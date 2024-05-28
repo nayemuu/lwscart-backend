@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 const replaceMongoIdInArray = (array) => {
     const mappedArray = array
         .map((item) => ({

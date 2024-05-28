@@ -16,11 +16,11 @@ const categorySchema = new Schema({
         lowercase: true,
     },
     thumbnail: {
-        type: String,
+        type: Object,
         required: true,
     },
     logo: {
-        type: String,
+        type: Object,
         required: true,
     },
 });

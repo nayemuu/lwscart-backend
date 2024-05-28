@@ -5,9 +5,9 @@
 /* eslint-disable import/prefer-default-export */
 
 const slugify = require('slugify');
-const cloudinary = require('cloudinary').v2;
 const categoryModel = require('../models/categoryModel');
-const { replaceMongoIdInArray } = require('../utils/data-util');
+const { replaceMongoIdInArray } = require('../utils/mongoDB-utils');
+const { replaceCloudinaryObjectIntoUrlInArray } = require('../utils/cloudinary-utils');
 
 const { uploadOnCloudinary } = require('../utils/cloudinary');
 
@@ -30,18 +30,13 @@ const create = async (req, res) => {
             return res.json({ error: 'Already exists' });
         }
 
-        // const res1 = await cloudinary.uploader.upload(thumbnail.path);
-        // console.log("res1 = ",res1);
-        // const res2 = await cloudinary.uploader.upload(logo.path);
-        // console.log("res2 = ",res2);
-        const res1 = await uploadOnCloudinary(thumbnail.path);
-        console.log("res1 = ",res1);
-        const res2 = await uploadOnCloudinary(ogo.path);
-        console.log("res2 = ",res2);
+        const thumbnailImageDetails = await uploadOnCloudinary(thumbnail.path);
+        // console.log("thumbnailImageDetails = ", thumbnailImageDetails);
+        const logoImageDetails = await uploadOnCloudinary(logo.path);
+        // console.log("logoImageDetails = ", logoImageDetails);
 
-        // const category = await categoryModel.create({ name, slug: slugify(name), thumbnail: thumbnail.filename, logo:logo.filename });
-        // res.json(category);
-        res.json({message:"success"});
+        const category = await categoryModel.create({ name, slug: slugify(name), thumbnail: thumbnailImageDetails, logo:logoImageDetails });
+        res.json(category);
     } catch (err) {
         console.log(err);
         return res.status(500).json(err);
@@ -50,8 +45,14 @@ const create = async (req, res) => {
 
 const list = async (req, res) => {
     try {
-        const all = await categoryModel.find({}).select(['name', 'image']).lean();
-        res.json(replaceMongoIdInArray(all));
+        const dataFromMongodb = await categoryModel.find({}).select(['name', 'thumbnail', "logo"]).lean();
+
+        let cloudinaryFields = ['thumbnail', 'logo']; 
+        console.log("dataFromMongodb = ", dataFromMongodb);
+        let finalData = replaceCloudinaryObjectIntoUrlInArray(replaceMongoIdInArray(dataFromMongodb), cloudinaryFields);
+        console.log("finalData = ", finalData);
+
+        res.json(finalData);
     } catch (err) {
         console.log(err);
         return res.status(400).json(err.message);

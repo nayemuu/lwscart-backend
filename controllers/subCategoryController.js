@@ -7,7 +7,7 @@
 const slugify = require('slugify');
 const subCategoryModel = require('../models/subCategoryModel');
 const categoryModel = require('../models/categoryModel');
-const { replaceMongoIdInArray } = require('../utils/data-util');
+const { replaceMongoIdInArray } = require('../utils/mongoDB-utils');
 
 const create = async (req, res) => {
     try {

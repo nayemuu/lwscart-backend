@@ -4,8 +4,7 @@ const fs = require('fs');
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
     api_key: process.env.API_KEY,
-    // api_secret: process.env.API_SECRET,
-    api_secret: 123,
+    api_secret: process.env.API_SECRET,
 });
 
 const uploadOnCloudinary = async (localFilePath) => {
@@ -14,15 +13,26 @@ const uploadOnCloudinary = async (localFilePath) => {
             throw new Error('Provide Valid localFilePath');
         }
         const response = await cloudinary.uploader.upload(localFilePath);
+
+        
+        fs.unlink(localFilePath, (error) => {
+            if(error){
+                console.log('uploadOnCloudinary, fsmodule error = ', error);
+            }
+        });
         return response;
     } catch (error) {
+        //  console.log('error = ', error);
         if (localFilePath) {
             fs.unlink(localFilePath, (error) => {
-                console.log('imagae gallery delete fsmodule error = ', error);
+                if(error){
+                    console.log('uploadOnCloudinary, fsmodule error = ', error);
+                }
             });
+
+            // fs.unlink(localFilePath);
         }
-            // console.log('error = ', error);
-            throw new Error(error);
+            return null;
     }
 };
 
