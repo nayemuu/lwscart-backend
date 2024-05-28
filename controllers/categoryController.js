@@ -9,7 +9,7 @@ const categoryModel = require('../models/categoryModel');
 const { replaceMongoIdInArray } = require('../utils/mongoDB-utils');
 const { replaceCloudinaryObjectIntoUrlInArray } = require('../utils/cloudinary-utils');
 
-const { uploadOnCloudinary } = require('../utils/cloudinary');
+const { uploadOnCloudinary , deleteFromCloudinary} = require('../utils/cloudinary');
 
 
 
@@ -36,7 +36,7 @@ const create = async (req, res) => {
         // console.log("logoImageDetails = ", logoImageDetails);
 
         const category = await categoryModel.create({ name, slug: slugify(name), thumbnail: thumbnailImageDetails, logo:logoImageDetails });
-        res.json(category);
+        res.status(201).json(category);
     } catch (err) {
         console.log(err);
         return res.status(500).json(err);
@@ -48,22 +48,27 @@ const list = async (req, res) => {
         const dataFromMongodb = await categoryModel.find({}).select(['name', 'thumbnail', "logo"]).lean();
 
         let cloudinaryFields = ['thumbnail', 'logo']; 
-        console.log("dataFromMongodb = ", dataFromMongodb);
+        // console.log("dataFromMongodb = ", dataFromMongodb);
         let finalData = replaceCloudinaryObjectIntoUrlInArray(replaceMongoIdInArray(dataFromMongodb), cloudinaryFields);
-        console.log("finalData = ", finalData);
+        // console.log("finalData = ", finalData);
 
-        res.json(finalData);
+        res.status(200).json(finalData);
     } catch (err) {
         console.log(err);
-        return res.status(400).json(err.message);
+        return res.status(500).json(err.message);
     }
 };
 
 const remove = async (req, res) => {
     try {
         console.log('req.params.categoryId = ', req.params.categoryId);
-        const removed = await categoryModel.findByIdAndDelete(req.params.categoryId);
-        res.json(removed);
+        const deletedData = await categoryModel.findByIdAndDelete(req.params.categoryId);
+        console.log("deletedData = ", deletedData);
+
+        deleteFromCloudinary(deletedData.thumbnail);
+        deleteFromCloudinary(deletedData.logo);
+
+        res.json({message: "deleted successfully"});
     } catch (err) {
         console.log(err);
         return res.status(400).json(err.message);

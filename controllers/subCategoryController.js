@@ -32,7 +32,7 @@ const create = async (req, res) => {
             category
         });
 
-        res.json(subCategory);
+        res.status(201).json({message:"Category Created Sucessfully"});
     } catch (err) {
         console.log(err);
         return res.status(400).json(err);
@@ -52,11 +52,11 @@ const list = async (req, res) => {
 const remove = async (req, res) => {
     try {
         console.log('req.params.subCategoryId = ', req.params.subCategoryId);
-        const removed = await subCategoryModel.findByIdAndDelete(req.params.subCategoryId);
-        res.json(removed);
+        const deletedData = await subCategoryModel.findByIdAndDelete(req.params.subCategoryId);
+        res.json({message: "deleted successfully"});
     } catch (err) {
         console.log(err);
-        return res.status(400).json(err.message);
+        return res.status(500).json(err.message);
     }
 };
 

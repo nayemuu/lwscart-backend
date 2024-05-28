@@ -37,4 +37,16 @@ const uploadOnCloudinary = async (localFilePath) => {
 };
 
 
-module.exports = {uploadOnCloudinary};
+const deleteFromCloudinary = async (photo) => {
+    try {
+        if (!photo) {
+            throw new Error('Provide Valid photo');
+        }
+        cloudinary.uploader.destroy(photo.public_id);
+    } catch (error) {
+         console.log('error = ', error);
+    }
+};
+
+
+module.exports = {uploadOnCloudinary, deleteFromCloudinary};
