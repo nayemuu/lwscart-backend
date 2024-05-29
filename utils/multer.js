@@ -38,10 +38,11 @@ const upload = multer({
 
         if (file.fieldname === 'logo' || file.fieldname === 'thumbnail' ) {
             // eslint-disable-next-line prettier/prettier
-        if (file.mimetype === 'image/png' || file.mimetype === 'image/png' || file.mimetype === 'image/jpeg') {
+            // console.log("file.mimetype = ", file.mimetype );
+        if (file.mimetype === 'image/png' || file.mimetype === 'image/png' || file.mimetype === 'image/jpeg'|| file.mimetype === 'image/svg+xml'|| file.mimetype === 'image/webp') {
                 cb(null, true);
             } else {
-                cb(new Error('only jpg, png, jpeg format allowed!'));
+                cb(new Error('only jpg, png, jpeg, svg, webp formats are allowed!'));
             }
         } else {
             cb(new Error('this field is not defined in multer')); // যদি কোন field match না করে

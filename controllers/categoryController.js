@@ -16,8 +16,18 @@ const { uploadOnCloudinary , deleteFromCloudinary} = require('../utils/cloudinar
 const create = async (req, res) => {
     try {
         const { name } = req.body;
-        const thumbnail  = req.files['thumbnail'][0];
-        const logo  = req.files['logo'][0];
+        const thumbnail  = req.files['thumbnail']?.length? req.files['thumbnail'][0] : null;
+        const logo  =  req.files['logo']?.length? req.files['logo'][0] : null;
+
+        if(!thumbnail){
+            console.log("thumbnail = ", thumbnail);
+            return res.status(500).json({message : "thumbnail is requird"});
+        }
+
+        if(!logo){
+            console.log("logo = ", logo);
+            return res.status(500).json({message : "logo is requird"});
+        }
 
         // console.log("thumbnail = ", thumbnail);
         // console.log("logo = ", logo);
@@ -61,18 +71,44 @@ const list = async (req, res) => {
 
 const remove = async (req, res) => {
     try {
-        console.log('req.params.categoryId = ', req.params.categoryId);
+        // console.log('req.params.categoryId = ', req.params.categoryId);
         const deletedData = await categoryModel.findByIdAndDelete(req.params.categoryId);
-        console.log("deletedData = ", deletedData);
+        // console.log("deletedData = ", deletedData);
 
         deleteFromCloudinary(deletedData.thumbnail);
         deleteFromCloudinary(deletedData.logo);
 
-        res.json({message: "deleted successfully"});
+        res.status(200).json({message: "deleted successfully"});
     } catch (err) {
         console.log(err);
         return res.status(400).json(err.message);
     }
 };
 
-module.exports = { create, list, remove };
+const update = async (req, res) => {
+    try {
+        console.log('req.params.categoryId = ', req.params.categoryId);
+        const thumbnail  = req.files['thumbnail']?.length? req.files['thumbnail'][0] : null;
+        const logo  =  req.files['logo']?.length? req.files['logo'][0] : null;
+
+        console.log("thumbnail = ", thumbnail);
+        console.log("logo = ", logo);
+
+
+        const targatedData = await categoryModel.findOne({_id: req.params.categoryId});
+        console.log("targatedData = ", targatedData);
+        if(targatedData){            
+            return res.status(200).json({message: "updated successfully"});
+        }
+
+        // deleteFromCloudinary(deletedData.thumbnail);
+        // deleteFromCloudinary(deletedData.logo);
+        res.status(400).json({message: "provide valid id"});
+
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json(err.message);
+    }
+};
+
+module.exports = { create, list, update, remove };
