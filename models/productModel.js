@@ -13,7 +13,7 @@ const productSchema = new Schema({
         trim: true,
         required: true,
     },
-    photos: {
+    images: {
         type: Array,
         required: true,
     },
@@ -45,13 +45,15 @@ const productSchema = new Schema({
         type: Number,
         required: true,
     },
-    discountPrice : {
+    discountPercentage : {
         type: Number,
         required: true,
     },
-    color:{
-        type: Array,
-    },
+    color: [{   // category is field name, Note Your Schema Name
+        type: mongoose.Types.ObjectId,
+        ref: "Color", // This Category is reffering your Schema
+        required: false
+    }],
     reviews:{
         type: Number,
         required: true,

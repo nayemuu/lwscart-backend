@@ -6,6 +6,7 @@ const authRoutes = require('./routes/authRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const suCategoryRoutes = require('./routes/subCategoryRoutes');
 const productRoutes = require('./routes/productRoutes');
+const colorRoutes = require('./routes/colorRoutes');
 
 require('dotenv').config();
 
@@ -22,6 +23,7 @@ app.use('/auth', authRoutes);
 app.use('/category', categoryRoutes);
 app.use('/sub-category', suCategoryRoutes);
 app.use('/product', productRoutes);
+app.use('/color', colorRoutes);
 
 app.get('/', (req, res) => {
     res.send('Welcome to root Server');
