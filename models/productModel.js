@@ -32,7 +32,7 @@ const productSchema = new Schema({
         required: true
     },
     subCategory: {
-        type: String,
+        type: mongoose.Types.ObjectId, // 
         ref: "SubCategory",
         required: true,
     },
@@ -49,7 +49,7 @@ const productSchema = new Schema({
         type: Number,
         required: true,
     },
-    color: [{   // category is field name, Note Your Schema Name
+    colors: [{   // category is field name, Note Your Schema Name
         type: mongoose.Types.ObjectId,
         ref: "Color", // This Category is reffering your Schema
         required: false
@@ -62,6 +62,12 @@ const productSchema = new Schema({
     reviews:{
         type: Object,
         required: true,
+    },    
+    keywords: {
+        type: Array,
+    },  
+    sizes: {
+        type: Array,
     },
 });
 
