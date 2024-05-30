@@ -69,6 +69,11 @@ const productSchema = new Schema({
     sizes: {
         type: Array,
     },
+    totalSold: {
+        type: Number,
+        required: true,
+        default:0
+    },
 });
 
 module.exports = mongoose.model('Product', productSchema);
