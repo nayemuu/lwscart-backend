@@ -62,7 +62,12 @@ const productSchema = new Schema({
     reviews:{
         type: Object,
         required: true,
-    },    
+    }, 
+    rating: {
+        type: Number,
+        required: true,
+        default:3.5
+    },   
     keywords: {
         type: Array,
     },  

@@ -34,7 +34,7 @@ const create = async (req, res) => {
 const list = async (req, res) => {
     const { limit, offset } = req.query;
     try {
-        const products = await productModel.find({}).populate("category", "name").populate("subCategory", "name").populate("color", "name").lean();  // category is field name, Note Your Schema Name
+        const products = await productModel.find({}).populate("category", "name").populate("subCategory", "name").populate("colors", "name").lean();  // category is field name, Note Your Schema Name
         if (products.length === 0) {
             return { count: 0, limit: limit ? limit : 10, offset: offset ? offset : 0, products: [] };
           }
