@@ -5,6 +5,7 @@ const connectToDatabase = require('./connectToDatabase');
 const authRoutes = require('./routes/authRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const suCategoryRoutes = require('./routes/subCategoryRoutes');
+const productRoutes = require('./routes/productRoutes');
 
 require('dotenv').config();
 
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use('/auth', authRoutes);
 app.use('/category', categoryRoutes);
 app.use('/sub-category', suCategoryRoutes);
+app.use('/product', productRoutes);
 
 app.get('/', (req, res) => {
     res.send('Welcome to root Server');

@@ -7,31 +7,20 @@ const categorySchema = new Schema({
         type: String,
         trim: true,
         required: true,
+        maxLength: 50,
+        unique: true,
+    },
+    slug: {
+        type: String,
+        unique: true,
+        lowercase: true,
     },
     thumbnail: {
         type: Object,
         required: true,
     },
-    photos: {
-        type: Array,
-    },
-    stock: {
-        type: Number,
-        required: true,
-    },
-    brand: {
-        type: String,
-        trim: true,
-        required: true,
-    },
-    category: {
-        type: String,
-        trim: true,
-        required: true,
-    },
-    subcategory: {
-        type: String,
-        trim: true,
+    logo: {
+        type: Object,
         required: true,
     },
 });
