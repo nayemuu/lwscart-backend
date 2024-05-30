@@ -1,13 +1,13 @@
 
 const productModel = require('../models/productModel');
-const subCategoryModel = require('../models/productModel');
+const subCategoryModel = require('../models/subCategoryModel');
 const categoryModel = require('../models/categoryModel');
 const { replaceMongoIdInArray } = require('../utils/mongoDB-utils');
 
 const create = async (req, res) => {
     try {
         const {category, subCategory } = req.body;
-        console.log("req.body = ", req.body);
+        // console.log("req.body = ", req.body);
 
         const categoryExists = await categoryModel.findById(category);
         if (!categoryExists) {
@@ -15,12 +15,14 @@ const create = async (req, res) => {
         }
 
 
-        const subCategoryExists = await categoryModel.findById(subCategory);
+        const subCategoryExists = await subCategoryModel.findById(subCategory);
+
+        console.log("subCategoryExists" , subCategoryExists);
         if (!subCategoryExists) {
             return res.status(400).json({ error: 'subCategory does not exist' });
         }
 
-        // await productModel.create(req.body);
+        await productModel.create(req.body);
 
         res.status(201).json({message:"Product Created Sucessfully"});
     } catch (err) {

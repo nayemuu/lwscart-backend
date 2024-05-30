@@ -31,7 +31,7 @@ const productSchema = new Schema({
         ref: "Category", // This Category is reffering your Schema
         required: true
     },
-    subcategory: {
+    subCategory: {
         type: String,
         ref: "SubCategory",
         required: true,
@@ -54,8 +54,13 @@ const productSchema = new Schema({
         ref: "Color", // This Category is reffering your Schema
         required: false
     }],
+    description:{
+        type: String,
+        trim: true,
+        required: true,
+    },
     reviews:{
-        type: Number,
+        type: Object,
         required: true,
     },
 });
