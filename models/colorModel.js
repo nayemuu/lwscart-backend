@@ -14,6 +14,10 @@ const colorSchema = new Schema({
         type: String,
         unique: true,
         lowercase: true,
+    },
+    colorCode: {
+        type: String,
+        unique: true,
     }
 });
 
